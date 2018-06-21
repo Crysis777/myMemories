@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">myMemories</string>
+    <string name="mainmemobrowse_rec_button">Record</string>
+    <string name="mainmemobrowse_filter_button">Filter</string>
+
+    <string name="instructions">Place your fingertip on the Home button to verify your identity</string>
+    <string name="fingerprintauthentication_permission">Please enable the fingerprint permission</string>
+    <string name="fingerprintauthentication_reg_fingerprint">No fingerprint configured. Please register at least one fingerprint in your device\'s Settings</string>
+    <string name="fingerprintauthentication_enable_lockscreen">Please enable lockscreen security in your device\'s Settings</string>
+    <string name="fingerprintauthentication_icon_description">An icon of a fingerprint</string>
 </resources>
