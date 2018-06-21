@@ -43,40 +43,39 @@ public class FingerprintAuthentication extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.TextView);
 
-            //Check whether the user has granted your app the USE_FINGERPRINT permission//
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-                // If your app doesn't have this permission, then display the following text//
-                textView.setText(R.string.fingerprintauthentication_permission);
+        //Check whether the user has granted your app the USE_FINGERPRINT permission//
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+            // If your app doesn't have this permission, then display the following text//
+            textView.setText(R.string.fingerprintauthentication_permission);
+        }
+
+        //Check that the user has registered at least one fingerprint//
+        if (!fingerprintManager.hasEnrolledFingerprints()) {
+            // If the user hasn’t configured any fingerprints, then display the following message//
+            textView.setText(R.string.fingerprintauthentication_reg_fingerprint);
+        }
+
+        //Check that the lockscreen is secured//
+        if (!keyguardManager.isKeyguardSecure()) {
+            // If the user hasn’t secured their lockscreen with a PIN password or pattern, then display the following text//
+            textView.setText(R.string.fingerprintauthentication_enable_lockscreen);
+        } else {
+            try {
+                generateKey();
+            } catch (FingerprintException e) {
+                e.printStackTrace();
             }
 
-            //Check that the user has registered at least one fingerprint//
-            if (!fingerprintManager.hasEnrolledFingerprints()) {
-                // If the user hasn’t configured any fingerprints, then display the following message//
-                textView.setText(R.string.fingerprintauthentication_reg_fingerprint);
+            if (initCipher()) {
+                //If the cipher is initialized successfully, then create a CryptoObject instance//
+                FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
+
+                // Here, I’m referencing the FingerprintHandler class that we’ll create in the next section. This class will be responsible
+                // for starting the authentication process (via the startAuth method) and processing the authentication process events//
+                FingerprintHandler helper = new FingerprintHandler(this);
+                helper.startAuth(fingerprintManager, cryptoObject);
             }
-
-            //Check that the lockscreen is secured//
-            if (!keyguardManager.isKeyguardSecure()) {
-                // If the user hasn’t secured their lockscreen with a PIN password or pattern, then display the following text//
-                textView.setText(R.string.fingerprintauthentication_enable_lockscreen);
-            } else {
-                try {
-                    generateKey();
-                } catch (FingerprintException e) {
-                    e.printStackTrace();
-                }
-
-                if (initCipher()) {
-                    //If the cipher is initialized successfully, then create a CryptoObject instance//
-                    FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
-
-                    // Here, I’m referencing the FingerprintHandler class that we’ll create in the next section. This class will be responsible
-                    // for starting the authentication process (via the startAuth method) and processing the authentication process events//
-                    FingerprintHandler helper = new FingerprintHandler(this);
-                    helper.startAuth(fingerprintManager, cryptoObject);
-                }
-            }
-
+        }
     }
 
 //Create the generateKey method that we’ll use to gain access to the Android keystore and generate the encryption key//
