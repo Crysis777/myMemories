@@ -36,8 +36,13 @@ public class FingerprintAuthentication extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fingerprint_authentication);
+    }
 
-            //Get an instance of KeyguardManager and FingerprintManager//
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Get an instance of KeyguardManager and FingerprintManager//
         KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
         FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 

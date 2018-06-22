@@ -3,6 +3,7 @@ package de.semester6.wwi15b5.dhbw.mymemories;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.CancellationSignal;
@@ -54,6 +55,9 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     //onAuthenticationSucceeded is called when a fingerprint has been successfully matched to one of the fingerprints stored on the user’s device//
     public void onAuthenticationSucceeded(
             FingerprintManager.AuthenticationResult result) {
-        Toast.makeText(context, "Success!", Toast.LENGTH_LONG).show();
+
+        //After succeded authentication switching to main activity
+        Intent intent = new Intent(context, MainMemoBrowse.class);
+        context.startActivity(intent);
     }
 }

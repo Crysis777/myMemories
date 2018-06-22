@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">myMemories</string>
+
     <string name="mainmemobrowse_rec_button">Record</string>
     <string name="mainmemobrowse_filter_button">Filter</string>
+    <string name="mainmemobrowse_start_playing">Start playing</string>
+    <string name="mainmemobrowse_stop_playing">Stop playing</string>
+    <string name="mainmemobrowse_start_recording">Start recording</string>
+    <string name="mainmemobrowse_stop_recording">Stop recording</string>
 
     <string name="instructions">Place your fingertip on the Home button to verify your identity</string>
     <string name="fingerprintauthentication_permission">Please enable the fingerprint permission</string>
