@@ -39,7 +39,6 @@ public class RecordMemo extends AppCompatActivity {
                 break;
         }
         if (!permissionToRecordAccepted ) finish();
-
     }
 
     private void onRecord(boolean start) {
