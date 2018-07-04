@@ -23,15 +23,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="onPlayButtonClicked"
-        android:text="@string/mainmemobrowse_stop_playing"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        android:text="@string/mainmemobrowse_start_playing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mRecordButton" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/mEditText"
         android:layout_width="379dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -58,6 +57,7 @@
 
     <Button
         android:id="@+id/button3"
+        android:onClick="onSaveButtonClicked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.86" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline4"

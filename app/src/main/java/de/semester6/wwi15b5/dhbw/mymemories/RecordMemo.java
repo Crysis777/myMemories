@@ -3,6 +3,7 @@ package de.semester6.wwi15b5.dhbw.mymemories;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -35,6 +37,7 @@ public class RecordMemo extends AppCompatActivity {
     private boolean mStartRecording = true;
 
     private Button playButton, recordButton;
+    private EditText editText;
 
     // Requesting permission to RECORD_AUDIO
     private boolean permissionToRecordAccepted = false;
@@ -53,17 +56,25 @@ public class RecordMemo extends AppCompatActivity {
 
     private void onRecord(boolean start) {
         if (start) {
+            playButton.setClickable(false);
+            playButton.setTextColor(Color.parseColor("#999999"));
             startRecording();
         } else {
             stopRecording();
+            playButton.setClickable(true);
+            playButton.setTextColor(Color.parseColor("#000000"));
         }
     }
 
     private void onPlay(boolean start) {
         if (start) {
+            recordButton.setClickable(false);
+            recordButton.setTextColor(Color.parseColor("#999999"));
             startPlaying();
         } else {
             stopPlaying();
+            recordButton.setClickable(true);
+            recordButton.setTextColor(Color.parseColor("#000000"));
         }
     }
 
@@ -125,6 +136,15 @@ public class RecordMemo extends AppCompatActivity {
         mStartPlaying = !mStartPlaying;
     }
 
+    public void onSaveButtonClicked(View view) {
+        if(editText.getText().toString().trim().isEmpty()) {
+            Context context = getApplicationContext();
+            CharSequence text = "Please insert a title before you save your recording!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(context, text, duration).show();
+        }
+    }
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -141,7 +161,7 @@ public class RecordMemo extends AppCompatActivity {
 
         recordButton = findViewById(R.id.mRecordButton);
         playButton = findViewById(R.id.mPlayButton);
-
+        editText = findViewById(R.id.mEditText);
     }
 
     @Override
