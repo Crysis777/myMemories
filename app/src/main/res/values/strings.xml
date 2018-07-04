@@ -13,4 +13,7 @@
     <string name="fingerprintauthentication_reg_fingerprint">No fingerprint configured. Please register at least one fingerprint in your device\'s Settings</string>
     <string name="fingerprintauthentication_enable_lockscreen">Please enable lockscreen security in your device\'s Settings</string>
     <string name="fingerprintauthentication_icon_description">An icon of a fingerprint</string>
+    <string name="titel">Titel:</string>
+    <string name="save">Save</string>
+    <string name="name_of_recording">Name of recording</string>
 </resources>

@@ -7,12 +7,17 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -25,6 +30,11 @@ public class RecordMemo extends AppCompatActivity {
     private MediaRecorder mRecorder = null;
 
     private MediaPlayer   mPlayer = null;
+
+    private boolean mStartPlaying = true;
+    private boolean mStartRecording = true;
+
+    private Button playButton, recordButton;
 
     // Requesting permission to RECORD_AUDIO
     private boolean permissionToRecordAccepted = false;
@@ -95,48 +105,24 @@ public class RecordMemo extends AppCompatActivity {
         mRecorder = null;
     }
 
-    class RecordButton extends android.support.v7.widget.AppCompatButton {
-        boolean mStartRecording = true;
-
-        OnClickListener clicker = new OnClickListener() {
-            public void onClick(View v) {
-                onRecord(mStartRecording);
-                if (mStartRecording) {
-                    setText(R.string.mainmemobrowse_stop_recording);
-                } else {
-                    setText(R.string.mainmemobrowse_start_recording);
-                }
-                mStartRecording = !mStartRecording;
-            }
-        };
-
-        public RecordButton(Context ctx) {
-            super(ctx);
-            setText(R.string.mainmemobrowse_start_recording);
-            setOnClickListener(clicker);
+    public void onRecordButtonClicked(View view) {
+        onRecord(mStartRecording);
+        if (mStartRecording) {
+            recordButton.setText(R.string.mainmemobrowse_stop_recording);
+        } else {
+            recordButton.setText(R.string.mainmemobrowse_start_recording);
         }
+        mStartRecording = !mStartRecording;
     }
 
-    class PlayButton extends android.support.v7.widget.AppCompatButton {
-        boolean mStartPlaying = true;
-
-        OnClickListener clicker = new OnClickListener() {
-            public void onClick(View v) {
-                onPlay(mStartPlaying);
-                if (mStartPlaying) {
-                    setText(R.string.mainmemobrowse_stop_playing);
-                } else {
-                    setText(R.string.mainmemobrowse_start_playing);
-                }
-                mStartPlaying = !mStartPlaying;
-            }
-        };
-
-        public PlayButton(Context ctx) {
-            super(ctx);
-            setText(R.string.mainmemobrowse_start_playing);
-            setOnClickListener(clicker);
+    public void onPlayButtonClicked(View view) {
+        onPlay(mStartPlaying);
+        if (mStartPlaying) {
+            playButton.setText(R.string.mainmemobrowse_stop_playing);
+        } else {
+            playButton.setText(R.string.mainmemobrowse_start_playing);
         }
+        mStartPlaying = !mStartPlaying;
     }
 
     @Override
@@ -147,22 +133,15 @@ public class RecordMemo extends AppCompatActivity {
         mFileName = getExternalCacheDir().getAbsolutePath();
         mFileName += "/audiorecordtest.3gp";
 
+
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
-        LinearLayout ll = new LinearLayout(this);
-        RecordButton mRecordButton = new RecordButton(this);
-        ll.addView(mRecordButton,
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        0));
-        PlayButton mPlayButton = new PlayButton(this);
-        ll.addView(mPlayButton,
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        0));
-        setContentView(ll);
+
+        setContentView(R.layout.activity_record_memo);
+
+        recordButton = findViewById(R.id.mRecordButton);
+        playButton = findViewById(R.id.mPlayButton);
+
     }
 
     @Override
