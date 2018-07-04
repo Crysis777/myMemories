@@ -16,4 +16,5 @@
     <string name="titel">Titel:</string>
     <string name="save">Save</string>
     <string name="name_of_recording">Name of recording</string>
+    <string name="empty_title">Please insert a title before you save your recording!</string>
 </resources>

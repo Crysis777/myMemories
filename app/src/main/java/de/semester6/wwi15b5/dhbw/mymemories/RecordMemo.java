@@ -2,6 +2,7 @@ package de.semester6.wwi15b5.dhbw.mymemories;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -36,7 +37,7 @@ public class RecordMemo extends AppCompatActivity {
     private boolean mStartPlaying = true;
     private boolean mStartRecording = true;
 
-    private Button playButton, recordButton;
+    private Button playButton, recordButton, saveButton;
     private EditText editText;
 
     // Requesting permission to RECORD_AUDIO
@@ -58,11 +59,15 @@ public class RecordMemo extends AppCompatActivity {
         if (start) {
             playButton.setClickable(false);
             playButton.setTextColor(Color.parseColor("#999999"));
+            saveButton.setClickable(false);
+            saveButton.setTextColor(Color.parseColor("#999999"));
             startRecording();
         } else {
             stopRecording();
             playButton.setClickable(true);
             playButton.setTextColor(Color.parseColor("#000000"));
+            saveButton.setClickable(true);
+            saveButton.setTextColor(Color.parseColor("#000000"));
         }
     }
 
@@ -70,11 +75,15 @@ public class RecordMemo extends AppCompatActivity {
         if (start) {
             recordButton.setClickable(false);
             recordButton.setTextColor(Color.parseColor("#999999"));
+            saveButton.setClickable(false);
+            saveButton.setTextColor(Color.parseColor("#999999"));
             startPlaying();
         } else {
             stopPlaying();
             recordButton.setClickable(true);
             recordButton.setTextColor(Color.parseColor("#000000"));
+            saveButton.setClickable(true);
+            saveButton.setTextColor(Color.parseColor("#000000"));
         }
     }
 
@@ -97,9 +106,9 @@ public class RecordMemo extends AppCompatActivity {
     private void startRecording() {
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mRecorder.setOutputFile(mFileName);
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
         try {
             mRecorder.prepare();
@@ -139,9 +148,13 @@ public class RecordMemo extends AppCompatActivity {
     public void onSaveButtonClicked(View view) {
         if(editText.getText().toString().trim().isEmpty()) {
             Context context = getApplicationContext();
-            CharSequence text = "Please insert a title before you save your recording!";
             int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(context, text, duration).show();
+            Toast.makeText(context, R.string.empty_title, duration).show();
+        }
+        else {
+
+            Intent intent = new Intent(this, MainMemoBrowse.class);
+            startActivity(intent);
         }
     }
 
@@ -151,17 +164,16 @@ public class RecordMemo extends AppCompatActivity {
 
         // Record to the external cache directory for visibility
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/audiorecordtest.3gp";
-
+        mFileName += "/memo.mp4";
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-
 
         setContentView(R.layout.activity_record_memo);
 
         recordButton = findViewById(R.id.mRecordButton);
         playButton = findViewById(R.id.mPlayButton);
         editText = findViewById(R.id.mEditText);
+        saveButton = findViewById(R.id.mSave);
     }
 
     @Override
