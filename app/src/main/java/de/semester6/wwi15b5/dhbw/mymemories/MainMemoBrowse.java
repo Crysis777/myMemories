@@ -67,4 +67,5 @@ public class MainMemoBrowse extends AppCompatActivity {
 
     //TODO Implement Cards with a RecyclerView to display existent Memos
 
+    //TODO Share memo with other applications
 }
