@@ -31,12 +31,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<String> texte;
     private boolean bStartPlaying = true;
     private MediaPlayer bPlayer = null;
+
+
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-
         TextView itemText;
         ImageView editView;
         ImageView playView;
@@ -44,9 +46,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
 
-            itemText = (TextView) itemView.findViewById(R.id.info_text);
-            editView = (ImageView) itemView.findViewById(R.id.imageViewEdit);
-            playView = (ImageView) itemView.findViewById(R.id.imageViewPlay);
+
+            itemText = itemView.findViewById(R.id.info_text);
+            editView = itemView.findViewById(R.id.imageViewEdit);
+            playView = itemView.findViewById(R.id.imageViewPlay);
 
         }
     }
@@ -76,7 +79,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 if(view.equals(holder.editView)){
                     onClickEdit(position, texte.get(position).toString(), view);
                 } else if(view.equals(holder.playView)){
-                    onClickPlay(position, texte.get(position).toString(), view);
+                    onClickPlay(position, texte.get(position).toString(), view, holder);
                 }
             }
         };
@@ -84,12 +87,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.playView.setOnClickListener(onClickListenerEdit);
     }
 
-    public void onClickPlay(int pos, String memoText, View view){
+    public void onClickPlay(int pos, String memoText, View view, ViewHolder holder){
         onPlayB(bStartPlaying, memoText, view);
         if (bStartPlaying) {
             //Change button to pause icon
+            holder.playView.setImageResource(R.drawable.baseline_pause_black_36dp);
         } else {
             //Change button to play icon
+            holder.playView.setImageResource(R.drawable.baseline_play_arrow_black_36dp);
         }
         bStartPlaying = !bStartPlaying;
     }
