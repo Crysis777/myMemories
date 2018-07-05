@@ -24,12 +24,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         TextView itemText;
         ImageView editView;
+        ImageView playView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             itemText = (TextView) itemView.findViewById(R.id.info_text);
             editView = (ImageView) itemView.findViewById(R.id.imageViewEdit);
+            playView = (ImageView) itemView.findViewById(R.id.imageViewEdit);
 
         }
     }
@@ -63,6 +65,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         };
         holder.editView.setOnClickListener(onClickListenerEdit);
 
+        final View.OnClickListener onClickListenerPlay = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(view.equals(holder.playView)){
+                    onClickPlay(texte.get(position).toString(), view);
+                }
+            }
+        };
+        holder.playView.setOnClickListener(onClickListenerPlay);
+
+
+    }
+
+    public void onClickPlay(String memoText, View view){
 
     }
 
