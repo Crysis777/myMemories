@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
@@ -16,10 +16,11 @@ import java.util.ArrayList;
 public class MainMemoBrowse extends AppCompatActivity {
 
     private RecyclerView recView;
-    private SearchView searchView;
+    private EditText editTextSearch;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     static ArrayList<String> textArray = new ArrayList<>();
+    static ArrayList<String> textArrayOriginal = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class MainMemoBrowse extends AppCompatActivity {
         setContentView(R.layout.activity_main_memo_browse);
 
         recView = findViewById(R.id.recView1);
-        //searchView = findViewById(R.id.searchView1);
+        editTextSearch = findViewById(R.id.EditTextSearch);
 
         mLayoutManager = new LinearLayoutManager(this);
         recView.setLayoutManager(mLayoutManager);
@@ -40,6 +41,10 @@ public class MainMemoBrowse extends AppCompatActivity {
         //Read out filenames
         loadFileList();
 
+        reloadRecylcer();
+    }
+
+    private void reloadRecylcer() {
         //Refresh RecycleView
         mAdapter = new MyAdapter(textArray);
         recView.setAdapter(mAdapter);
@@ -61,6 +66,7 @@ public class MainMemoBrowse extends AppCompatActivity {
                 textArray.add(file.getName().substring(0, file.getName().length() - 4));
             }
         }
+        textArrayOriginal = (ArrayList<String>) textArray.clone();
     }
 
     public void onRecordClick(View view) {
@@ -68,16 +74,29 @@ public class MainMemoBrowse extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //TODO Implement filter function.
     public void onFilterClick(View view) {
-        //This is just test code
+        String searchString = editTextSearch.getText().toString().trim();
 
-    }
+        if(searchString.isEmpty()) {
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(context, R.string.empty_search_string, duration).show();
 
-    //TODO Implement search functionality
-    public void onSearchClick(View view) {
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-        Toast.makeText(context, "searched", duration).show();
+            textArray.clear();
+            textArray = (ArrayList<String>) textArrayOriginal.clone();
+            reloadRecylcer();
+
+        } else {
+            ArrayList<String> tempTextArray = new ArrayList<>();
+            for (String singleString: textArray) {
+                if(singleString.contains(searchString)) {
+                    tempTextArray.add(singleString);
+                }
+            }
+            textArray.clear();
+            textArray = (ArrayList<String>) tempTextArray.clone();
+            tempTextArray.clear();
+            reloadRecylcer();
+        }
     }
 }
