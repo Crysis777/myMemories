@@ -1,10 +1,14 @@
 package de.semester6.wwi15b5.dhbw.mymemories;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,11 +23,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // each data item is just a string in this case
 
         TextView itemText;
+        ImageView editView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             itemText = (TextView) itemView.findViewById(R.id.info_text);
+            editView = (ImageView) itemView.findViewById(R.id.imageViewEdit);
 
         }
     }
@@ -45,9 +51,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.itemText.setText(texte.get(position).toString());
+        final View.OnClickListener onClickListenerEdit = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(view.equals(holder.editView)){
+                    onClickEdit(position, texte.get(position).toString(), view);
+                }
+            }
+        };
+        holder.editView.setOnClickListener(onClickListenerEdit);
 
+
+    }
+
+    public void onClickEdit(int pos, String memoText, View view){
+        Intent intent = new Intent(view.getContext(), EditActivity.class);
+        intent.putExtra("memoText", memoText);
+        view.getContext().startActivity(intent);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
