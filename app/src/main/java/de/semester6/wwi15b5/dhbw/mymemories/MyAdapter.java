@@ -106,7 +106,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         bPlayer = new MediaPlayer();
         String bFileName = null;
         String Temp = view.getContext().getDir("memos", MODE_PRIVATE).getAbsolutePath();
-        bFileName = Temp + memoText + ".mp4";
+        bFileName = Temp + "/" + memoText + ".mp4";
         try {
             bPlayer.setDataSource(bFileName);
             bPlayer.prepare();
