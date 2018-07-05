@@ -22,13 +22,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class RecordMemo extends AppCompatActivity {
 
     private static final String LOG_TAG = "AudioRecordTest";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private static String mFileName = null;
+    private static String mFileNameTemp = null;
 
     private MediaRecorder mRecorder = null;
 
@@ -90,7 +95,7 @@ public class RecordMemo extends AppCompatActivity {
     private void startPlaying() {
         mPlayer = new MediaPlayer();
         try {
-            mPlayer.setDataSource(mFileName);
+            mPlayer.setDataSource(mFileNameTemp);
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {
@@ -107,7 +112,7 @@ public class RecordMemo extends AppCompatActivity {
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mRecorder.setOutputFile(mFileName);
+        mRecorder.setOutputFile(mFileNameTemp);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
         try {
@@ -145,16 +150,37 @@ public class RecordMemo extends AppCompatActivity {
         mStartPlaying = !mStartPlaying;
     }
 
-    public void onSaveButtonClicked(View view) {
-        if(editText.getText().toString().trim().isEmpty()) {
+    public void onSaveButtonClicked(View view) throws IOException {
+        String mFileName = editText.getText().toString().trim();
+        if(mFileName.isEmpty()) {
             Context context = getApplicationContext();
             int duration = Toast.LENGTH_SHORT;
             Toast.makeText(context, R.string.empty_title, duration).show();
         }
         else {
+            //TODO Implement saving to new directory with new filename
+            File fileTemp = new File(getCacheDir(),"tempMemo.mp4");
+            mFileName += ".mp4";
+            File file = new File(getDir("memos",MODE_PRIVATE),mFileName);
+            copyMemo(fileTemp,file);
+
+            fileTemp.delete();
 
             Intent intent = new Intent(this, MainMemoBrowse.class);
             startActivity(intent);
+        }
+    }
+
+    public static void copyMemo(File src, File dst) throws IOException {
+        try (InputStream in = new FileInputStream(src)) {
+            try (OutputStream out = new FileOutputStream(dst)) {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            }
         }
     }
 
@@ -163,8 +189,8 @@ public class RecordMemo extends AppCompatActivity {
         super.onCreate(icicle);
 
         // Record to the external cache directory for visibility
-        mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/memo.mp4";
+        mFileNameTemp = getCacheDir().getAbsolutePath();
+        mFileNameTemp += "/tempMemo.mp4";
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 

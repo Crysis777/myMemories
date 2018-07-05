@@ -10,6 +10,8 @@ import android.os.CancellationSignal;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import java.io.FileOutputStream;
+
 public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {
 
     // You should use the CancellationSignal method whenever your app can no longer process user input, for example when your app goes
