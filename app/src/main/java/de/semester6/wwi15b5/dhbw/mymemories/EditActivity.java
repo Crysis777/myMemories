@@ -2,7 +2,10 @@ package de.semester6.wwi15b5.dhbw.mymemories;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
+
+import java.io.IOException;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -17,5 +20,9 @@ public class EditActivity extends AppCompatActivity {
         myEdit.setText(data);
 
         oldFileName = data;
+    }
+
+    public void onSaveButtonClicked(View view) throws IOException{
+
     }
 }
