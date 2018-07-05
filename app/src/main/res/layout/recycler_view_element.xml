@@ -29,16 +29,29 @@
                 android:text="memo" />
 
             <Button
-                android:text="button1"
-                android:layout_weight="4"
+                android:id="@+id/play_button"
                 android:layout_width="0dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:text="Play" />
 
             <Button
-                android:text="button2"
-                android:layout_weight="4"
+                android:id="@+id/edit_button"
                 android:layout_width="0dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="Edit" />
+            <Button
+                android:text="button3"
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_height="match_parent"
+                android:id="@+id/share_button"
+                />
 
 
         </LinearLayout>
