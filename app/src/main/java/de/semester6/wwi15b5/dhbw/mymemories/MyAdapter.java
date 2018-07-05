@@ -53,6 +53,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return MainMemoBrowse.text.size();
+        return MainMemoBrowse.textArray.size();
     }
 }
