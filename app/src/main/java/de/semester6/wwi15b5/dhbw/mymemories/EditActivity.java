@@ -42,9 +42,18 @@ public class EditActivity extends AppCompatActivity {
     }
 
     public void onSaveClickE(View view) throws IOException {
-        oldFileName += ".mp4";
-        File fileOld = new File(getDir("memos", MODE_PRIVATE), oldFileName);
-        String newFileName = myEdit.getText().toString().trim() + ".mp4";
+        String l_oldFileName = oldFileName + ".mp4";
+        File fileOld = new File(getDir("memos", MODE_PRIVATE), l_oldFileName);
+        String newFileName = myEdit.getText().toString().trim();
+
+        if(newFileName.isEmpty()) {
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(context, R.string.empty_title, duration).show();
+            return;
+        }
+
+        newFileName += ".mp4";
         File fileNew = new File(getDir("memos", MODE_PRIVATE), newFileName);
         try {
             copyMemo(fileOld, fileNew);
