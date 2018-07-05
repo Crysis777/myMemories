@@ -42,6 +42,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         TextView itemText;
         ImageView editView;
         ImageView playView;
+        ImageView viewShare;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -50,7 +51,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             itemText = itemView.findViewById(R.id.info_text);
             editView = itemView.findViewById(R.id.imageViewEdit);
             playView = itemView.findViewById(R.id.imageViewPlay);
-
+            viewShare = itemView.findViewById(R.id.imageViewShare);
         }
     }
 
@@ -80,11 +81,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     onClickEdit(position, texte.get(position).toString(), view);
                 } else if(view.equals(holder.playView)){
                     onClickPlay(position, texte.get(position).toString(), view, holder);
+                } else if(view.equals(holder.viewShare)){
+                    onClickSend(position, texte.get(position).toString(), view, holder);
                 }
             }
         };
         holder.editView.setOnClickListener(onClickListenerEdit);
         holder.playView.setOnClickListener(onClickListenerEdit);
+        holder.viewShare.setOnClickListener(onClickListenerEdit);
+    }
+
+    public void onClickSend(int pos, String memoText, View view, ViewHolder holder){
+        Context context = view.getContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast.makeText(context, "To be continued...", duration).show();
     }
 
     public void onClickPlay(int pos, String memoText, View view, ViewHolder holder){
