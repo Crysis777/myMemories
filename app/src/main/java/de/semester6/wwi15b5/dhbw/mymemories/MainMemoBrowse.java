@@ -71,7 +71,6 @@ public class MainMemoBrowse extends AppCompatActivity {
     //TODO Implement filter function.
     public void onFilterClick(View view) {
         //This is just test code
-
     }
 
     //TODO Implement search functionality
