@@ -2,6 +2,7 @@ package de.semester6.wwi15b5.dhbw.mymemories;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -9,17 +10,13 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -37,7 +34,7 @@ public class RecordMemo extends AppCompatActivity {
 
     private MediaRecorder mRecorder = null;
 
-    private MediaPlayer   mPlayer = null;
+    private MediaPlayer mPlayer = null;
 
     private boolean mStartPlaying = true;
     private boolean mStartRecording = true;
@@ -47,17 +44,17 @@ public class RecordMemo extends AppCompatActivity {
 
     // Requesting permission to RECORD_AUDIO
     private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 break;
         }
-        if (!permissionToRecordAccepted ) finish();
+        if (!permissionToRecordAccepted) finish();
     }
 
     private void onRecord(boolean start) {
@@ -152,22 +149,31 @@ public class RecordMemo extends AppCompatActivity {
 
     public void onSaveButtonClicked(View view) throws IOException {
         String mFileName = editText.getText().toString().trim();
-        if(mFileName.isEmpty()) {
+        if (mFileName.isEmpty()) {
             Context context = getApplicationContext();
             int duration = Toast.LENGTH_SHORT;
             Toast.makeText(context, R.string.empty_title, duration).show();
-        }
-        else {
-            //TODO Implement saving to new directory with new filename
-            File fileTemp = new File(getCacheDir(),"tempMemo.mp4");
+        } else {
+            File fileTemp = new File(getCacheDir(), "tempMemo.mp4");
             mFileName += ".mp4";
-            File file = new File(getDir("memos",MODE_PRIVATE),mFileName);
-            copyMemo(fileTemp,file);
+            File file = new File(getDir("memos", MODE_PRIVATE), mFileName);
 
-            fileTemp.delete();
+            if (!fileTemp.exists()) {
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(context, R.string.empty_recording, duration).show();
+            } else {
+                if (file.exists()) {
+                    showOverwriteAlert(file, fileTemp);
+                } else {
+                    copyMemo(fileTemp, file);
 
-            Intent intent = new Intent(this, MainMemoBrowse.class);
-            startActivity(intent);
+                    fileTemp.delete();
+
+                    Intent intent = new Intent(this, MainMemoBrowse.class);
+                    startActivity(intent);
+                }
+            }
         }
     }
 
@@ -182,6 +188,36 @@ public class RecordMemo extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    //Same logic just for the case that the same file already exists
+    public void showOverwriteAlert(final File file, final File fileTemp) {
+        final Context ctx = this;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage(R.string.overwrite_dialog);
+        builder.setPositiveButton(R.string.overwrite_button_1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                try {
+                    copyMemo(fileTemp, file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                fileTemp.delete();
+
+                Intent intent = new Intent(ctx, MainMemoBrowse.class);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton(R.string.overwrite_button_2, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
