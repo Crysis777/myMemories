@@ -1,6 +1,7 @@
 package de.semester6.wwi15b5.dhbw.mymemories;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
@@ -14,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
+import android.widget.Toast;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -43,7 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             itemText = (TextView) itemView.findViewById(R.id.info_text);
             editView = (ImageView) itemView.findViewById(R.id.imageViewEdit);
-            //playView = (ImageView) itemView.findViewById(R.id.imageViewEdit);
+            playView = (ImageView) itemView.findViewById(R.id.imageViewEdit);
 
         }
     }
@@ -72,10 +75,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public void onClick(View view) {
                 if(view.equals(holder.editView)){
                     onClickEdit(position, texte.get(position).toString(), view);
+                } else if(view.equals(holder.playView)){
+
+                    System.out.println("PLAY");
                 }
             }
         };
         holder.editView.setOnClickListener(onClickListenerEdit);
+        holder.playView.setOnClickListener(onClickListenerEdit);
 
 /*        final View.OnClickListener onClickListenerPlay = new View.OnClickListener() {
             @Override
