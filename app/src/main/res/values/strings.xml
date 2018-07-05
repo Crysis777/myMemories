@@ -23,4 +23,5 @@
     <string name="empty_recording">Nothing has been recorded yet.</string>
     <string name="delete">delete</string>
     <string name="empty_search_string">Please insert a search string.</string>
+    <string name="search_and_press_filter">Search and press Filter</string>
 </resources>
