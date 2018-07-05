@@ -17,4 +17,8 @@
     <string name="save">Save</string>
     <string name="name_of_recording">Name of recording</string>
     <string name="empty_title">Please insert a title before you save your recording!</string>
+    <string name="overwrite_dialog">Would you like to overwrite your existing memo with the same name?</string>
+    <string name="overwrite_button_1">Overwrite</string>
+    <string name="overwrite_button_2">Cancel</string>
+    <string name="empty_recording">Nothing has been recorded yet.</string>
 </resources>
