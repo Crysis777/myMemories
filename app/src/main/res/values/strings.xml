@@ -21,4 +21,5 @@
     <string name="overwrite_button_1">Overwrite</string>
     <string name="overwrite_button_2">Cancel</string>
     <string name="empty_recording">Nothing has been recorded yet.</string>
+    <string name="delete">delete</string>
 </resources>
