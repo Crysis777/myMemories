@@ -46,6 +46,12 @@ public class EditActivity extends AppCompatActivity {
         File fileOld = new File(getDir("memos", MODE_PRIVATE), l_oldFileName);
         String newFileName = myEdit.getText().toString().trim();
 
+        if(oldFileName.equals(newFileName)) {
+            Intent intent = new Intent(this, MainMemoBrowse.class);
+            startActivity(intent);
+            return;
+        }
+
         if(newFileName.isEmpty()) {
             Context context = getApplicationContext();
             int duration = Toast.LENGTH_SHORT;
