@@ -83,6 +83,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.viewShare.setOnClickListener(onClickListenerEdit);
     }
 
+    //TODO Implement Sharing funktionality to other applications
     public void onClickSend(int pos, String memoText, View view, ViewHolder holder){
         Context context = view.getContext();
         int duration = Toast.LENGTH_SHORT;

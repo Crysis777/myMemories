@@ -85,4 +85,7 @@ public class EditActivity extends AppCompatActivity {
             }
         }
     }
+
+    //TODO Implement cutting functionality to cut audio files left and right
+
 }
