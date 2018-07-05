@@ -43,6 +43,8 @@
         app:layout_constraintGuide_begin="518dp" />
 
     <SearchView
+        android:id="@+id/searchView1"
+        android:onClick="onSearchClick"
         android:layout_width="255dp"
         android:layout_height="32dp"
         android:layout_marginEnd="8dp"
