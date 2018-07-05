@@ -46,7 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             itemText = (TextView) itemView.findViewById(R.id.info_text);
             editView = (ImageView) itemView.findViewById(R.id.imageViewEdit);
-            playView = (ImageView) itemView.findViewById(R.id.imageViewEdit);
+            playView = (ImageView) itemView.findViewById(R.id.imageViewPlay);
 
         }
     }
@@ -76,27 +76,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 if(view.equals(holder.editView)){
                     onClickEdit(position, texte.get(position).toString(), view);
                 } else if(view.equals(holder.playView)){
-
-                    System.out.println("PLAY");
+                    onClickPlay(position, texte.get(position).toString(), view);
                 }
             }
         };
         holder.editView.setOnClickListener(onClickListenerEdit);
         holder.playView.setOnClickListener(onClickListenerEdit);
-
-/*        final View.OnClickListener onClickListenerPlay = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(view.equals(holder.playView)){
-                    onClickPlay(texte.get(position).toString(), view);
-                }
-            }
-        };
-        holder.playView.setOnClickListener(onClickListenerPlay);
-*/
     }
-/*
-    public void onClickPlay(String memoText, View view){
+
+    public void onClickPlay(int pos, String memoText, View view){
         onPlayB(bStartPlaying, memoText);
         if (bStartPlaying) {
             //Change button to pause icon
@@ -131,7 +119,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         bPlayer.release();
         bPlayer = null;
     }
-*/
+
     public void onClickEdit(int pos, String memoText, View view){
         Intent intent = new Intent(view.getContext(), EditActivity.class);
         intent.putExtra("memoText", memoText);
