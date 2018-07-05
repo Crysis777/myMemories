@@ -17,14 +17,16 @@ import java.io.OutputStream;
 
 public class EditActivity extends AppCompatActivity {
 
+    private EditText myEdit;
     public String oldFileName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         String data= getIntent().getStringExtra("memoText");
 
-        EditText myEdit = (EditText) findViewById(R.id.mEditText5);
+        myEdit = findViewById(R.id.mEditText5);
         myEdit.setText(data);
 
         oldFileName = data;
@@ -39,10 +41,18 @@ public class EditActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onSaveClickE(View view) {
+    public void onSaveClickE(View view) throws IOException {
         oldFileName += ".mp4";
-        File file = new File(getDir("memos", MODE_PRIVATE), oldFileName);
-        copyMemo(file, file);
+        File fileOld = new File(getDir("memos", MODE_PRIVATE), oldFileName);
+        String newFileName = myEdit.getText().toString().trim() + ".mp4";
+        File fileNew = new File(getDir("memos", MODE_PRIVATE), newFileName);
+        try {
+            copyMemo(fileOld, fileNew);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        fileOld.delete();
 
         Intent intent = new Intent(this, MainMemoBrowse.class);
         startActivity(intent);
