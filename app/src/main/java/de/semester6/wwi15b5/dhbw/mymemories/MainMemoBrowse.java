@@ -73,5 +73,4 @@ public class MainMemoBrowse extends AppCompatActivity {
 
     //TODO Implement search functionality
 
-    //TODO Implement Cards with a RecyclerView to display existent Memos
 }

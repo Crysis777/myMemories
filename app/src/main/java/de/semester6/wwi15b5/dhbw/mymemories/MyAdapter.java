@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import de.semester6.wwi15b5.dhbw.mymemories.R;
-
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private ArrayList<String> texte;
@@ -21,15 +19,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // each data item is just a string in this case
 
         TextView itemText;
-        Button playButton;
-        Button editButton;
-        Button shareButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             itemText = (TextView) itemView.findViewById(R.id.info_text);
-            playButton = (Button) itemView.findViewById(R.id.play_button);
+
         }
     }
 
@@ -43,6 +38,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
         View itemView1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_element, null);
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        itemView1.setLayoutParams(lp);
         return new ViewHolder(itemView1);
     }
 
