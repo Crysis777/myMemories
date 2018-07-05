@@ -85,7 +85,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     public void onClickPlay(int pos, String memoText, View view){
-        onPlayB(bStartPlaying, memoText);
+        onPlayB(bStartPlaying, memoText, view);
         if (bStartPlaying) {
             //Change button to pause icon
         } else {
@@ -94,18 +94,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         bStartPlaying = !bStartPlaying;
     }
 
-    private void onPlayB(boolean start, String memoText) {
+    private void onPlayB(boolean start, String memoText, View view) {
         if (start) {
-            startPlayingB(memoText);
+            startPlayingB(memoText, view);
         } else {
             stopPlayingB();
         }
     }
 
-    private void startPlayingB(String memoText) {
+    private void startPlayingB(String memoText, View view) {
         bPlayer = new MediaPlayer();
         String bFileName = null;
-        bFileName = memoText + ".mp4";
+        String Temp = view.getContext().getDir("memos", MODE_PRIVATE).getAbsolutePath();
+        bFileName = Temp + memoText + ".mp4";
         try {
             bPlayer.setDataSource(bFileName);
             bPlayer.prepare();
