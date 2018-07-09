@@ -3,6 +3,8 @@ package de.semester6.wwi15b5.dhbw.mymemories;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,11 +85,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.viewShare.setOnClickListener(onClickListenerEdit);
     }
 
-    //TODO Implement Sharing funktionality to other applications
+    //TODO Implement Sharing functionality to other applications
     public void onClickSend(int pos, String memoText, View view, ViewHolder holder){
-        Context context = view.getContext();
-        int duration = Toast.LENGTH_SHORT;
-        Toast.makeText(context, "To be continued...", duration).show();
+        //Context context = view.getContext();
+        //int duration = Toast.LENGTH_SHORT;
+        //Toast.makeText(context, "To be continued...", duration).show();
+
+        String sharePath = view.getContext().getDir("memos", MODE_PRIVATE)
+                + "/" + memoText + ".mp4";
+        Uri uri = Uri.parse(sharePath);
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("audio/*");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        view.getContext().startActivity(Intent.createChooser(share, "Share Sound File"));
     }
 
     public void onClickPlay(int pos, String memoText, View view, ViewHolder holder){
