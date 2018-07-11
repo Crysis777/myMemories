@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -91,11 +93,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         //int duration = Toast.LENGTH_SHORT;
         //Toast.makeText(context, "To be continued...", duration).show();
 
+        //File file = new File(view.getContext().getDir("memos", MODE_PRIVATE), memoText);
+        //Uri fileUri = FileProvider.getUriForFile(
+        //        view.getContext(),
+        //        "de.semester6.wwi15b5.dhbw.mymemories.fileprovider",
+        //        file);
+
+
         String sharePath = view.getContext().getDir("memos", MODE_PRIVATE)
                 + "/" + memoText + ".mp4";
         Uri uri = Uri.parse(sharePath);
+
+
         Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("audio/*");
+
+        share.addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        share.setDataAndType(
+                uri,"audio/*");
+
+        //share.setType("audio/*");
         share.putExtra(Intent.EXTRA_STREAM, uri);
         view.getContext().startActivity(Intent.createChooser(share, "Share Sound File"));
     }
