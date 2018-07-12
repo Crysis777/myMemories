@@ -77,6 +77,10 @@ public class MainMemoBrowse extends AppCompatActivity {
     public void onFilterClick(View view) {
         String searchString = editTextSearch.getText().toString().trim();
 
+        textArray.clear();
+        textArray = (ArrayList<String>) textArrayOriginal.clone();
+        reloadRecylcer();
+
         if(searchString.isEmpty()) {
             Context context = getApplicationContext();
             int duration = Toast.LENGTH_SHORT;

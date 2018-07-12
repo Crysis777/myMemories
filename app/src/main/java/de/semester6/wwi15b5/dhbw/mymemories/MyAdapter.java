@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,9 +27,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private static final String LOG_TAG = "AudioPlayTest";
     private ArrayList<String> texte;
     private boolean bStartPlaying = true;
+    private String bFilePlaying;
     private MediaPlayer bPlayer = null;
-
-
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -73,11 +73,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         final View.OnClickListener onClickListenerEdit = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(view.equals(holder.editView)){
+                if (view.equals(holder.editView)) {
                     onClickEdit(position, texte.get(position).toString(), view);
-                } else if(view.equals(holder.playView)){
+                } else if (view.equals(holder.playView)) {
                     onClickPlay(position, texte.get(position).toString(), view, holder);
-                } else if(view.equals(holder.viewShare)){
+                } else if (view.equals(holder.viewShare)) {
                     onClickSend(position, texte.get(position).toString(), view, holder);
                 }
             }
@@ -88,7 +88,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     //TODO Implement Sharing functionality to other applications
-    public void onClickSend(int pos, String memoText, View view, ViewHolder holder){
+    public void onClickSend(int pos, String memoText, View view, ViewHolder holder) {
         //Context context = view.getContext();
         //int duration = Toast.LENGTH_SHORT;
         //Toast.makeText(context, "To be continued...", duration).show();
@@ -110,53 +110,69 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         share.addFlags(
                 Intent.FLAG_GRANT_READ_URI_PERMISSION);
         share.setDataAndType(
-                uri,"audio/*");
+                uri, "audio/*");
 
         //share.setType("audio/*");
         share.putExtra(Intent.EXTRA_STREAM, uri);
         view.getContext().startActivity(Intent.createChooser(share, "Share Sound File"));
     }
 
-    public void onClickPlay(int pos, String memoText, View view, ViewHolder holder){
-        onPlayB(bStartPlaying, memoText, view);
-        if (bStartPlaying) {
-            //Change button to pause icon
-            holder.playView.setImageResource(R.drawable.baseline_pause_black_36dp);
+    public void onClickPlay(int pos, String memoText, View view, ViewHolder holder) {
+        if((bFilePlaying == null) || (bFilePlaying.equals(memoText))) {
+            onPlayB(bStartPlaying, memoText, view, holder);
+            if (bStartPlaying) {
+                //Change button to pause icon
+                holder.playView.setImageResource(R.drawable.baseline_pause_black_36dp);
+            } else {
+                //Change button to play icon
+                holder.playView.setImageResource(R.drawable.baseline_play_arrow_black_36dp);
+            }
+            bStartPlaying = !bStartPlaying;
         } else {
-            //Change button to play icon
-            holder.playView.setImageResource(R.drawable.baseline_play_arrow_black_36dp);
+            Toast.makeText(view.getContext(), "Another file is still playing, please pause first.", Toast.LENGTH_SHORT).show();
         }
-        bStartPlaying = !bStartPlaying;
     }
 
-    private void onPlayB(boolean start, String memoText, View view) {
+    private void onPlayB(boolean start, String memoText, View view, ViewHolder holder) {
         if (start) {
-            startPlayingB(memoText, view);
+            startPlayingB(memoText, view, holder);
         } else {
             stopPlayingB();
         }
     }
 
-    private void startPlayingB(String memoText, View view) {
+    private void startPlayingB(String memoText, final View view, final ViewHolder holder) {
         bPlayer = new MediaPlayer();
-        String bFileName = null;
+        String bFileName;
         String Temp = view.getContext().getDir("memos", MODE_PRIVATE).getAbsolutePath();
         bFileName = Temp + "/" + memoText + ".mp4";
+        bFilePlaying = memoText;
         try {
             bPlayer.setDataSource(bFileName);
             bPlayer.prepare();
             bPlayer.start();
+
+            bPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    stopPlayingB();
+                    bStartPlaying = !bStartPlaying;
+                    holder.playView.setImageResource(R.drawable.baseline_play_arrow_black_36dp);
+                }
+            });
+
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
     }
 
-    private void stopPlayingB() {
+    public void stopPlayingB() {
         bPlayer.release();
         bPlayer = null;
+        bFilePlaying = null;
     }
 
-    public void onClickEdit(int pos, String memoText, View view){
+    public void onClickEdit(int pos, String memoText, View view) {
         Intent intent = new Intent(view.getContext(), EditActivity.class);
         intent.putExtra("memoText", memoText);
         view.getContext().startActivity(intent);
